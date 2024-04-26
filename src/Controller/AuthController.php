@@ -2,18 +2,18 @@
 
 namespace LeanPHP\Controller;
 
-use LeanPHP\Core\Http\Request;
-use LeanPHP\Core\Http\Response;
+use LeanPHP\Core\Request;
+use LeanPHP\Core\Response;
 use LeanPHP\Model\AuthModel;
 use LeanPHP\Core\JwtAuth;
-use LeanPHP\Core\EmailService;
+use LeanPHP\Core\ErrorHandler;
 use Exception;
-use PDO;
 
 class AuthController
 {
     private $authModel;
     private $jwtAuth;
+    private $errorHandler;
 
     /**
      * AuthController constructor.
@@ -21,6 +21,8 @@ class AuthController
     public function __construct()
     {
         $this->authModel = new AuthModel();
+        $this->jwtAuth = new JwtAuth();
+        $this->errorHandler = new ErrorHandler();  // Initialize the ErrorHandler
     }
 
     /**
@@ -28,7 +30,6 @@ class AuthController
      *
      * @param Request $request
      * @param Response $response
-     * @return Response
      */
     public function register(Request $request, Response $response)
     {
@@ -38,73 +39,65 @@ class AuthController
             $email = $request->get('email');
 
             if (empty($username) || empty($password) || empty($email)) {
-                return $response->withJSON(['error' => 'All fields are required'], 400)->send();
-            } else {
-                $result = $this->authModel->registerUser($username, $password, $email);
-                if ($result['error']) {
-                    return $response->withJSON(['error' => $result['message']], 409)->send(); // 409 Conflict
-                }
-                return $response->withJSON(['message' => $result['message']])->send();
+                $response->withJSON(['error' => 'All fields are required'], 400)->send();
+                return;
             }
+
+            $result = $this->authModel->registerUser($username, $password, $email);
+            if ($result['error']) {
+                $response->withJSON(['error' => $result['message']], 409)->send(); // 409 Conflict
+                return;
+            }
+            $response->withJSON(['message' => 'User registered successfully'])->send();
         } catch (Exception $e) {
-            error_log($e->getMessage());
-            return $response->withJSON(['error' => 'Internal Server Error'], 500)->send();
+            $this->errorHandler->handle($e);
         }
     }
 
     public function login(Request $request, Response $response)
     {
+        try {
+            $username = $request->get('username');
+            $password = $request->get('password');
 
-        $username = $request->get('username');
-        $password = $request->get('password');
+            $user = $this->authModel->loginUser($username);
+            if (!$user) {
+                $response->withJSON(['error' => 'User not found'], 404)->send();
+                return;
+            }
 
-        $user = $this->authModel->loginUser($username);
-        if (!$user) {
-            return $response->withJSON(['error' => 'User not found'], 404);
-        }
+            if (!password_verify($password, $user['password'])) {
+                $response->withJSON(['error' => 'Invalid credentials'], 401)->send();
+                return;
+            }
 
-        if (!password_verify($password, $user['password'])) {
-            return $response->withJSON(['error' => 'Invalid credentials'], 401);
-        }
-
-        if (password_verify($password, $user['password'])) {
-
-            // Token için payload oluştur
             $payload = ["sub" => $user['user_id'], "name" => $user['username'], "iat" => time()];
-            $tokenValidityInSeconds = 3600; // 1 saat
-
-            $this->jwtAuth = new JwtAuth();
+            $tokenValidityInSeconds = 3600; // 1 hour
             $token = $this->jwtAuth->createJWT($payload, $tokenValidityInSeconds);
             $expiryDate = date('Y-m-d H:i:s', time() + $tokenValidityInSeconds);
 
-            // Token ve expiry time'ı kaydet
             $this->authModel->saveTokenAndExpiry($user['user_id'], $token, $expiryDate);
-
-            // Token'ı response header'a ekle
-            $response = $response->withHeader('Authorization', 'Bearer ' . $token);
-
-            //return $response->withJSON(['User Login successfully ' =>  $token])->send();
-            return $response->withJSON(['token' => $token])->send();
-        } else {
-            // Eğer şifre doğrulanamazsa, hata mesajı dön
-            return $response->withJSON(['error' => 'Invalid credentials'], 401)->send();
+            $response->withHeader('Authorization', 'Bearer ' . $token)
+                     ->withJSON(['token' => $token])
+                     ->send();
+        } catch (Exception $e) {
+            $this->errorHandler->handle($e);
         }
     }
 
-    /*
-    public function forgotPassword(Request $request, Response $response, $token)
+    public function forgotPassword(Request $request, Response $response)
     {
-        $email = $request->get('email');
-
-        if (empty($email)) {
-            $response->json(['error' => 'Email is required'], 400);
-            return;
-        }
-
         try {
+            $email = $request->get('email');
+            if (empty($email)) {
+                $response->withJSON(['error' => 'Email is required'], 400)->send();
+                return;
+            }
+
             $user = $this->authModel->getUserByEmail($email);
+
             if (!$user) {
-                $response->json(['error' => 'User not found'], 404);
+                $response->withJSON(['error' => 'User not found'], 404)->send();
                 return;
             }
 
@@ -112,142 +105,83 @@ class AuthController
             $expiry = date('Y-m-d H:i:s', time() + 3600); // 1 hour expiry
 
             $this->authModel->storeResetToken($user['user_id'], $resetToken, $expiry);
-
-            $url = getenv('APP_URL');
-            $folder = getenv('APP_FOLDER');
-            $resetLink = $url . $folder . "resetPassword/{$resetToken}";
-
+            $resetLink = getenv('APP_URL') . getenv('APP_FOLDER') . "resetPassword/{$resetToken}";
             print_r($resetLink);
+            // Assuming you have a method to send emails
+            $this->sendResetEmail($email, $resetLink);
 
-            // Set headers
-            $headers = "From: no-reply@vedyweb.com\r\n";
-            $headers .= "Reply-To: no-reply@vedyweb.com\r\n";
-            $headers .= "Content-type: text/html; charset=UTF-8\r\n";
-
-            // Mail subject
-            $subject = "Your Password Reset Link";
-
-            // Mail body
-            $message = "<html><body>";
-            $message .= "<p>Click <a href='{$resetLink}'>here</a> to reset your password.</p>";
-            $message .= "</body></html>";
-
-
-            // Multiple recipients
-            $to = $email; // note the comma
-
-            // Subject
-            $subject = 'Your Password Reset Link from ' . $url;
-
-            // Message
-            $message = "<html><body>";
-            $message .= "<p>Your custom HTML messega lines ...</p>";
-            $message .= "<p>Click <a href='{$resetLink}'>here</a> to reset your password.</p>";
-            $message .= "</body></html>";
-
-            // To send HTML mail, the Content-type header must be set
-            $headers = "From: no-reply@vedyweb.com\r\n";
-            $headers .= "Reply-To: no-reply@vedyweb.com\r\n";
-            //$headers .= 'Cc: birthdayarchive@example.com';
-            //$headers. = 'Bcc: birthdaycheck@example.com';
-            $headers .= "Content-type: text/html; charset=UTF-8\r\n";
-            $headers .= "MIME-Version: 1.0\r\n";
-
-            // Sending email
-            if (!mail($to, $subject, $message, $headers)) {
-                $response->json(['error' => 'Failed to send email'], 500);
-                return;
-            }
-
-            $response->json(['message' => 'Reset email sent successfully', 'resetLink' => $resetLink]);
+            $response->withJSON(['message' => 'Reset email sent successfully', 'resetLink' => $resetLink])->send();
         } catch (Exception $e) {
-            $response->json(['error' => $e->getMessage()], 500);
+            $this->errorHandler->handle($e);
         }
     }
-*/
+
+    // Implement other methods similarly...
+
+    /**
+     * Helper method to send email for password reset
+     */
+    private function sendResetEmail($email, $resetLink)
+    {
+        $subject = "Your Password Reset Link";
+        $message = "<html><body>";
+        $message .= "<p>Click <a href='{$resetLink}'>here</a> to reset your password.</p>";
+        $message .= "</body></html>";
+        $headers = "From: no-reply@example.com\r\n";
+        $headers .= "Reply-To: no-reply@example.com\r\n";
+        $headers .= "Content-type: text/html; charset=UTF-8\r\n";
+
+        if (!mail($email, $subject, $message, $headers)) {
+            throw new Exception('Failed to send email');
+        }
+    }
 
     public function resetPassword(Request $request, Response $response, $token)
     {
-        //$token = $request->get('token');  // Token kullanıcıdan GET parametresi olarak alınır
-
-        if (empty($token)) {
-            $response->json(['error' => 'Token is required'], 400);
-            return;
-        }
-
         try {
-            $user = $this->authModel->getUserByResetToken($token);  // Token'e göre kullanıcıyı getir
+
+            if (empty($token)) {
+                $response->withJSON(['error' => 'Token is required'], 400)->send();
+                return;
+            }
+
+            $user = $this->authModel->getUserByResetToken($token);
             if (!$user) {
-                $response->json(['error' => 'Invalid or expired token'], 404);
+                $response->withJSON(['error' => 'Invalid or expired token'], 404)->send();
                 return;
             }
 
             $newPassword = $request->get('newPassword');
-            
-            $userId = $user['user_id'];
-
-            print_r($user['user_id'] . " - " . $newPassword);
-
             if (empty($newPassword)) {
-                $response->withJSON(['error' => 'New password is required'], 400);
+                $response->withJSON(['error' => 'New password is required'], 400)->send();
+                return;
             }
 
-
-            // Şifreyi güncelle
-            $this->authModel->updateUserPassword($userId, $newPassword);
-
-            $response->json(['message' => 'Token is valid and Password updated successfully']);
+            $this->authModel->updateUserPassword($user['user_id'], $newPassword);
+            $response->withJSON(['message' => 'Password updated successfully'])->send();
         } catch (Exception $e) {
-            $response->json(['error' => $e->getMessage()], 500);
+            $this->errorHandler->handle($e);
         }
-
     }
 
-    /*
-        public function resetPassword(Request $request, Response $response, $token)
-        {
-            try {
-                if (empty($token)) {
-                    return $response->withJSON(['error' => 'Token is required'], 400);
-                }
-
-                $userId = $this->authModel->verifyResetToken($token);
-                if (!$userId) {
-                    $response->withJSON(['error' => 'Invalid or expired token'], 401);
-                }
-
-                $newPassword = $request->get('newPassword');
-                print_r($newPassword);
-                exit();
-
-                if (empty($newPassword)) {
-                    $response->withJSON(['error' => 'New password is required'], 400);
-                }
-
-                $this->authModel->updatePassword($userId, $newPassword);
-                $response->withJSON(['message' => 'Password reset successfully']);
-            } catch (Exception $e) {
-                error_log($e->getMessage());
-                $response->withJSON(['error' => 'Internal Server Error'], 500);
-            }
-        }
-    */
     /**
      * Retrieves a user's data based on their email.
      *
-     * @param string $email User's email.
-     * @return array|false User data if exists, otherwise false.
+     * @param Request $request
+     * @param Response $response
      */
-    public function getUserByEmail($email)
+    public function getUserByEmail(Request $request, Response $response)
     {
         try {
-            $query = "SELECT * FROM  $this->table WHERE email = ?";
-            $stmt = $this->db->prepare($query);
-            $stmt->execute([$email]);
-            return $stmt->fetch();
-        } catch (PDO $e) {
-            $this->logError($e->getMessage());
-            throw new Exception("Database error while fetching user by email.");
+            $email = $request->get('email');
+            $user = $this->authModel->getUserByEmail($email);
+            if (!$user) {
+                $response->withJSON(['error' => 'User not found'], 404)->send();
+                return;
+            }
+            $response->withJSON(['data' => $user])->send();
+        } catch (Exception $e) {
+            $this->errorHandler->handle($e);
         }
     }
 }

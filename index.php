@@ -14,8 +14,8 @@ $envFile = '.env.local';
 $autoloader->loadEnv($envFile);
 $autoloader->loadClass();
 
-$requestClass = $_ENV['APP_NAME'] . '\\Core\\Http\\Request';
-$responseClass = $_ENV['APP_NAME'] . '\\Core\\Http\\Response';
+$requestClass = $_ENV['APP_NAME'] . '\\Core\\Request';
+$responseClass = $_ENV['APP_NAME'] . '\\Core\\Response';
 $routesPath = __DIR__ . '/src/routes.php';
 
 $autoloader->loadRoutes($requestClass, $responseClass, $routesPath);

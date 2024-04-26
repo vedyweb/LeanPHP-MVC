@@ -1,6 +1,7 @@
 <?php
 
 namespace LeanPHP\Core;
+use Exception;
 
 class Autoloader
 {
@@ -61,7 +62,7 @@ class Autoloader
         $this->envPath = realpath(dirname(__DIR__, 2) . '/' . $envFile);
 
         if (!file_exists($this->envPath)) {
-            throw new \Exception('Environment file does not exist: ' . $this->envPath);
+            throw new Exception('Environment file does not exist: ' . $this->envPath);
         }
 
         $lines = file($this->envPath, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);

@@ -2,8 +2,8 @@
 
 namespace LeanPHP\Core;
 
-use LeanPHP\Core\Http\Request;
-use LeanPHP\Core\Http\Response;
+use LeanPHP\Core\Request;
+use LeanPHP\Core\Response;
 use LeanPHP\Model\AuthModel;
 
 class JwtAuth {

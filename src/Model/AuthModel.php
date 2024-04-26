@@ -5,6 +5,7 @@ namespace LeanPHP\Model;
 use Exception;
 use PDOException;
 use LeanPHP\Config\DatabaseManager;
+use LeanPHP\Core\ErrorHandler;
 use PDO;
 
 /**
@@ -16,6 +17,11 @@ class AuthModel
 
     protected $db;
     protected $table = 'users';
+    private $errorHandler;  // ErrorHandler özelliğini doğru şekilde tanımla
+
+    public function __construct() {
+        $this->errorHandler = new ErrorHandler;  // ErrorHandler örneğini başlat
+    }
 
     protected function getDb()
     {
@@ -24,16 +30,6 @@ class AuthModel
             $this->db = $databaseManager->getConnection();
         }
         return $this->db;
-    }
-
-    /**
-     * Log the error messages.
-     *
-     * @param string $message The error message.
-     */
-    private function logError($message)
-    {
-        error_log("[" . date("Y-m-d H:i:s") . "] ERROR in AuthModel: " . $message . "\n", 3, "auth_errors.log");
     }
 
     /**
@@ -62,7 +58,7 @@ class AuthModel
             $stmt->execute([':username' => $username, ':hashed_password' => $hashed_password, ':email' => $email]);
             return ['error' => false, 'message' => 'User registered successfully'];
         } catch (PDOException $e) {
-            $this->logError($e->getMessage());
+            $this->errorHandler->handle($e->getMessage());
             throw new Exception("Database error while registering user.");
         }
     }
@@ -71,12 +67,12 @@ class AuthModel
     public function loginUser($username)
     {
         try {
-            $sql = "SELECT user_id, username, password FROM users WHERE username = :username";
+            $sql = "SELECT * FROM users WHERE username = :username";
             $stmt = $this->getDb()->prepare($sql);
             $stmt->execute([':username' => $username]);
             return $stmt->fetch(PDO::FETCH_ASSOC);
         } catch (PDOException $e) {
-            $this->logError($e->getMessage());
+            $this->errorHandler->handle($e->getMessage());
             throw new Exception("Database error while fetching user by username.");
         }
     }
@@ -97,7 +93,7 @@ class AuthModel
 
             return $result ? $result['user_id'] : false;
         } catch (PDOException $e) {
-            $this->logError($e->getMessage());
+            $this->errorHandler->handle($e->getMessage());
             throw new Exception("Database error while verifying reset token.");
         }
     }
@@ -115,7 +111,7 @@ class AuthModel
             $stmt = $this->getDb()->prepare($query);
             $stmt->execute([$token, $userId]);
         } catch (PDOException $e) {
-            $this->logError($e->getMessage());
+            $this->errorHandler->handle($e->getMessage());
             throw new Exception("Database error while storing reset token.");
         }
     }
@@ -136,7 +132,7 @@ class AuthModel
             $stmt->execute([':token' => $token]);
             return $stmt->fetch();
         } catch (PDOException $e) {
-            $this->logError($e->getMessage());
+            $this->errorHandler->handle($e->getMessage());
             throw new Exception("Token Not Found");
         }
     }
@@ -155,7 +151,7 @@ class AuthModel
             $stmt = $this->getDb()->prepare($query);
             $stmt->execute([$token, $expiry, $userId]);
         } catch (PDOException $e) {
-            $this->logError($e->getMessage());
+            $this->errorHandler->handle($e->getMessage());
             throw new Exception("Database error while storing token and its expiry.");
         }
     }
@@ -175,7 +171,7 @@ class AuthModel
             $stmt = $this->getDb()->prepare($query);
             $stmt->execute([$hashedPassword, $userId]);
         } catch (PDOException $e) {
-            $this->logError($e->getMessage());
+            $this->errorHandler->handle($e->getMessage());
             throw new Exception("Database error while updating password.");
         }
     }
@@ -183,9 +179,18 @@ class AuthModel
     public function getUserByResetToken($token)
     {
         // Veritabanı sorgusu örneği (PDO kullanılarak)
-        $query = "SELECT * FROM users WHERE reset_token = ?";
+        $query = "SELECT user_id, reset_token FROM users WHERE reset_token = ?";
         $stmt = $this->getDb()->prepare($query);
         $stmt->execute([$token]);
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
+    public function getUserByEmail($email)
+    {
+        // Veritabanı sorgusu örneği (PDO kullanılarak)
+        $query = "SELECT user_id, email FROM users WHERE email = ?";
+        $stmt = $this->getDb()->prepare($query);
+        $stmt->execute([$email]);
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 }

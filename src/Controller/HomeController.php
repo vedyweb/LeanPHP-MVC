@@ -1,8 +1,8 @@
 <?php
 
 namespace LeanPHP\Controller;
-use LeanPHP\Core\Http\Response;
-USE LeanPHP\Core\Http\Request;
+use LeanPHP\Core\Response;
+USE LeanPHP\Core\Request;
 use LeanPHP\Core\JwtAuth;
 use LeanPHP\Config\DatabaseManager;
 use PDOException;

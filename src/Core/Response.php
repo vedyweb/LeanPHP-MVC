@@ -1,6 +1,6 @@
 <?php
 
-namespace LeanPHP\Core\Http;
+namespace LeanPHP\Core;
 
 class Response {
     private $body;
@@ -23,7 +23,7 @@ class Response {
         if ($status !== null) {
             $this->withStatus($status);
         }
-        $this->send();
+        // $this->send();
         return $this;
     }
 

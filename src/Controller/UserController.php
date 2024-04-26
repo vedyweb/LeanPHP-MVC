@@ -2,19 +2,19 @@
 
 namespace LeanPHP\Controller;
 use LeanPHP\Model\UserModel;
-use LeanPHP\Core\ExceptionHandler;
-use LeanPHP\Core\Http\Request;
-use LeanPHP\Core\Http\Response;
+use LeanPHP\Core\ErrorHandler;
+use LeanPHP\Core\Request;
+use LeanPHP\Core\Response;
 use Exception;
 
 class UserController {
     
     private $userModel;
-    private $ExceptionHandler;
+    private $errorHandler;  // ErrorHandler özelliğini doğru şekilde tanımla
 
     public function __construct() {
-        $this->userModel = new UserModel();
-        $this->ExceptionHandler = new ExceptionHandler();
+        $this->userModel = new UserModel;
+        $this->errorHandler = new ErrorHandler;  // ErrorHandler örneğini başlat
     }
 
     public function getAllUsers(Request $request, Response $response): void {
@@ -22,19 +22,16 @@ class UserController {
             $users = $this->userModel->getAll();
             $response->withJson(['data' => $users])->send();
         } catch (Exception $e) {
-            $error = $this->ExceptionHandler->handle($e);
-            $response->withStatus($error['status'])->withJson(['error' => $error['message']])->send();
+            $this->errorHandler->handle($e);
         }
     }
 
     public function getUserById(Request $request, Response $response, $id): void {
-
         try {
             $user = $this->userModel->getById($id);
             $response->withJson(['data' => $user])->send();
         } catch (Exception $e) {
-            $error = $this->ExceptionHandler->handle($e);
-            $response->withStatus($error['status'])->withJson(['error' => $error['message']])->send();
+            $this->errorHandler->handle($e);
         }
     }
 
@@ -48,8 +45,7 @@ class UserController {
             );
             $response->withJson(['data' => $newUser])->send();
         } catch (Exception $e) {
-            $error = $this->ExceptionHandler->handle($e);
-            $response->withStatus($error['status'])->withJson(['error' => $error['message']])->send();
+            $this->errorHandler->handle($e);
         }
     }
 
@@ -59,8 +55,7 @@ class UserController {
             $updatedUser = $this->userModel->update($id, $userData);
             $response->withJson(['data' => $updatedUser])->send();
         } catch (Exception $e) {
-            $error = $this->ExceptionHandler->handle($e);
-            $response->withStatus($error['status'])->withJson(['error' => $error['message']])->send();
+            $this->errorHandler->handle($e);
         }
     }
 
@@ -69,8 +64,7 @@ class UserController {
             $this->userModel->delete($id);
             $response->withJson(['message' => 'User deleted successfully'])->send();
         } catch (Exception $e) {
-            $error = $this->ExceptionHandler->handle($e);
-            $response->withStatus($error['status'])->withJson(['error' => $error['message']])->send();
+            $this->errorHandler->handle($e);
         }
     }
 
@@ -80,8 +74,7 @@ class UserController {
             $patchedUser = $this->userModel->patch($id, $userData);
             $response->withJson(['data' => $patchedUser])->send();
         } catch (Exception $e) {
-            $error = $this->ExceptionHandler->handle($e);
-            $response->withStatus($error['status'])->withJson(['error' => $error['message']])->send();
+            $this->errorHandler->handle($e);
         }
     }
 
@@ -90,8 +83,7 @@ class UserController {
             $results = $this->userModel->search($query);
             $response->withJson(['data' => $results])->send();
         } catch (Exception $e) {
-            $error = $this->ExceptionHandler->handle($e);
-            $response->withStatus($error['status'])->withJson(['error' => $error['message']])->send();
+            $this->errorHandler->handle($e);
         }
     }
 
@@ -100,8 +92,7 @@ class UserController {
             $count = $this->userModel->count();
             $response->withJson(['data' => ['count' => $count]])->send();
         } catch (Exception $e) {
-            $error = $this->ExceptionHandler->handle($e);
-            $response->withStatus($error['status'])->withJson(['error' => $error['message']])->send();
+            $this->errorHandler->handle($e);
         }
     }
 
@@ -110,8 +101,7 @@ class UserController {
             $filteredUsers = $this->userModel->filter($filters);
             $response->withJson(['data' => $filteredUsers])->send();
         } catch (Exception $e) {
-            $error = $this->ExceptionHandler->handle($e);
-            $response->withStatus($error['status'])->withJson(['error' => $error['message']])->send();
+            $this->errorHandler->handle($e);
         }
     }
 }

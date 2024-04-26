@@ -2,18 +2,24 @@
 
 namespace LeanPHP\Model;
 use LeanPHP\Config\DatabaseManager;
-
+use LeanPHP\Core\ErrorHandler;
 use PDO;
 use PDOException;
+use Exception;
 
 class UserModel {
     protected $db;
     protected $table = 'users';
+    private $errorHandler;
+
+    public function __construct() {
+        $this->errorHandler = new ErrorHandler();
+    }
 
     protected function getDb() {
         if (!$this->db) {
             $databaseManager = new DatabaseManager();
-            $this->db = $databaseManager->getConnection();  // Burada doğru şekilde atama yapıyoruz.
+            $this->db = $databaseManager->getConnection();
         }
         return $this->db;
     }
@@ -24,61 +30,44 @@ class UserModel {
             $stmt = $this->getDb()->query($query);
             return $stmt->fetchAll(PDO::FETCH_ASSOC);
         } catch (PDOException $e) {
-            $this->handleException($e);
-            return [];
+            $this->errorHandler->handle($e->getMessage());
+            throw new Exception("Database error while fetching all users.");
         }
     }
 
-    /**
-     * Fetch a single user by their ID.
-     *
-     * @param int $userId
-     * @return array|null
-     */
     public function getById(int $userId): ?array {
         $query = "SELECT * FROM $this->table WHERE user_id = :userId";
         try {
             $stmt = $this->getDb()->prepare($query);
             $stmt->bindParam(':userId', $userId, PDO::PARAM_INT);
             $stmt->execute();
-            return $stmt->fetch(PDO::FETCH_ASSOC) ?: null;
+            $result = $stmt->fetch(PDO::FETCH_ASSOC);
+            if ($result === false) {
+                // Eğer sonuç yoksa, null yerine özel bir hata mesajı içeren bir dizi döndür
+                return ['error' => true, 'message' => 'User not found'];
+            }
+            return $result;
         } catch (PDOException $e) {
-            $this->handleException($e);
-            return null;
+            $this->errorHandler->handle($e->getMessage());
+            throw new Exception("Database error while fetching user by ID.");
         }
     }
 
-    /**
-     * Create a new user in the database.
-     *
-     * @param string $username
-     * @param string $email
-     * @param string $password
-     * @param string|null $profilePicture
-     * @param string|null $bio
-     * @return bool
-     */
     public function create(string $username, string $email, string $password): bool {
-        $query = "INSERT INTO $this->table (username, email, password VALUES (:username, :email, :password)";
+        $query = "INSERT INTO $this->table (username, email, password) VALUES (:username, :email, :password)";
         try {
             $stmt = $this->getDb()->prepare($query);
+            $hashed_password = password_hash($password, PASSWORD_DEFAULT);
             $stmt->bindParam(':username', $username, PDO::PARAM_STR);
             $stmt->bindParam(':email', $email, PDO::PARAM_STR);
-            $stmt->bindParam(':password', $password, PDO::PARAM_STR);
+            $stmt->bindParam(':password', $hashed_password, PDO::PARAM_STR);
             return $stmt->execute();
         } catch (PDOException $e) {
-            $this->handleException($e);
-            return false;
+            $this->errorHandler->handle($e->getMessage());
+            throw new Exception("Database error while creating user.");
         }
     }
 
-    /**
-     * Update a user's details in the database.
-     *
-     * @param int $userId
-     * @param array $data
-     * @return bool
-     */
     public function update(int $userId, array $data): bool {
         $setString = '';
         foreach ($data as $key => $value) {
@@ -95,17 +84,11 @@ class UserModel {
             }
             return $stmt->execute();
         } catch (PDOException $e) {
-            $this->handleException($e);
-            return false;
+            $this->errorHandler->handle($e->getMessage());
+            throw new Exception("Database error while updating user.");
         }
     }
 
-    /**
-     * Delete a user from the database.
-     *
-     * @param int $userId
-     * @return bool
-     */
     public function delete(int $userId): bool {
         $query = "DELETE FROM $this->table WHERE user_id = :userId";
         try {
@@ -113,17 +96,11 @@ class UserModel {
             $stmt->bindParam(':userId', $userId, PDO::PARAM_INT);
             return $stmt->execute();
         } catch (PDOException $e) {
-            $this->handleException($e);
-            return false;
+            $this->errorHandler->handle($e->getMessage());
+            throw new Exception("Database error while deleting user.");
         }
     }
 
-    /**
-     * Search users by username.
-     *
-     * @param string $username
-     * @return array
-     */
     public function search(string $username): array {
         $query = "SELECT * FROM $this->table WHERE username LIKE :username";
         try {
@@ -133,79 +110,43 @@ class UserModel {
             $stmt->execute();
             return $stmt->fetchAll(PDO::FETCH_ASSOC);
         } catch (PDOException $e) {
-            $this->handleException($e);
-            return [];
+            $this->errorHandler->handle($e->getMessage());
+            throw new Exception("Database error while searching users.");
         }
     }
 
-    /**
-     * Count the total number of users in the database.
-     *
-     * @return int
-     */
     public function count(): int {
         $query = "SELECT COUNT(*) FROM $this->table";
         try {
             $stmt = $this->getDb()->query($query);
             return (int) $stmt->fetchColumn();
         } catch (PDOException $e) {
-            $this->handleException($e);
-            return 0;
+            $this->errorHandler->handle($e->getMessage());
+            throw new Exception("Database error while counting users.");
         }
     }
 
-    /**
-     * Filter users based on given criteria.
-     *
-     * @param array $criteria
-     * @return array
-     */
     public function filter(array $criteria): array {
         $query = "SELECT * FROM $this->table WHERE 1=1";
         $params = [];
-
-        if (isset($criteria['username'])) {
-            $query .= " AND username LIKE :username";
-            $params['username'] = "%" . $criteria['username'] . "%";
+    
+        foreach ($criteria as $key => $value) {
+            if ($value !== null) {
+                $query .= " AND $key LIKE :$key";
+                $params[$key] = "%$value%";
+            }
         }
-
-        if (isset($criteria['email'])) {
-            $query .= " AND email LIKE :email";
-            $params['email'] = "%" . $criteria['email'] . "%";
-        }
-
-        if (isset($criteria['join_date_from'])) {
-            $query .= " AND join_date >= :join_date_from";
-            $params['join_date_from'] = $criteria['join_date_from'];
-        }
-
-        if (isset($criteria['join_date_to'])) {
-            $query .= " AND join_date <= :join_date_to";
-            $params['join_date_to'] = $criteria['join_date_to'];
-        }
-
-        if (isset($criteria['last_login_from'])) {
-            $query .= " AND last_login >= :last_login_from";
-            $params['last_login_from'] = $criteria['last_login_from'];
-        }
-
-        if (isset($criteria['last_login_to'])) {
-            $query .= " AND last_login <= :last_login_to";
-            $params['last_login_to'] = $criteria['last_login_to'];
-        }
-
+    
         try {
             $stmt = $this->getDb()->prepare($query);
-
             foreach ($params as $key => &$value) {
                 $stmt->bindParam(":$key", $value);
             }
-
             $stmt->execute();
             return $stmt->fetchAll(PDO::FETCH_ASSOC);
         } catch (PDOException $e) {
-            $this->handleException($e);
-            return [];
+            $this->errorHandler->handle($e->getMessage());
+            throw new Exception("Database error while filtering users.");
         }
     }
-}
+}    

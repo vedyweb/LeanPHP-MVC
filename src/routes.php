@@ -30,7 +30,7 @@ return function ($router) {
     $router->post('newpassword', 'AuthController', 'forgotPassword');
     
     // http://localhost/resetPassword/84b8a02e2832b5d7e9897762abe0828ba6b20687d582ad2f0b83e7398917fb48b947dfe1955713bbf4a837f08870b0035cbe
-    $router->get('resetPassword/{token}', 'AuthController', 'resetPassword');
+    $router->post('resetPassword/{token}', 'AuthController', 'resetPassword');
 
     $router->get('secret', 'HomeController', 'secured');
     $router->get('users', 'UserController', 'getAllUsers');

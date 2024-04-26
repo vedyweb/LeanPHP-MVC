@@ -12,13 +12,13 @@
 #
 ###
 
-@hostname = http://lean.local
+@hostname = http://localhost/leanphp
 @path = api
 @userAgent = LeanPHPRestClient
 @username = vedat
-@password = vedyweb
+@password =  vedyweb123
 @userEmail = info@vedyweb.com
-@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjE4LCJuYW1lIjoidmVkYXQiLCJpYXQiOjE3MTQxMzM1OTMsImV4cCI6MTcxNDEzNzE5M30.iLVC-xPAfyuaN5V3cBYWTjJEc4L1v5dvrL2FIbxv-H8
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjE4LCJuYW1lIjoidmVkYXQiLCJpYXQiOjE3MTQxNjM2MjAsImV4cCI6MTcxNDE2NzIyMH0.76UM9Mweo92ITRs2CmQbaTe1hcQVakwFS_zrOJqJBRs
 ###
 
 POST {{hostname}}/register HTTP/1.1
@@ -60,6 +60,8 @@ Content-Type: application/json
 User-Agent: {{userAgent}}
 Authorization: Bearer {{token}}
 
+###
+
 GET {{hostname}}/secret HTTP/1.1
 Content-Type: application/json
 User-Agent: {{userAgent}}
@@ -74,20 +76,13 @@ Authorization: Bearer {{token}}
 
 ###
 
-GET {{hostname}}/install HTTP/1.1
-Content-Type: application/json
-User-Agent: {{userAgent}}
-Authorization: Bearer {{token}}
-
-###
-
 GET {{hostname}}/api/users HTTP/1.1
 Content-Type: application/json
 User-Agent: {{userAgent}}
 
 ###
 
-GET {{hostname}}/api/user/1 HTTP/1.1
+GET {{hostname}}/api/user/3 HTTP/1.1
 Content-Type: application/json
 User-Agent: {{userAgent}}
 
@@ -119,10 +114,10 @@ User-Agent: {{userAgent}}
 # Örnek response 18 - vedyweb{"message":"Token is valid and Password updated successfully"}
 # Bundan sonra tekrar login olduğunda yeni şifrenmi giriyorsun.
 
-GET http://localhost/resetPassword/8a271202f12affe3f332343d2da7411fd194f1e3c3839674ef7cfed5d0a69485c651c9c573e249d31f37627a602c8b418b64
+POST https://localhost/leanphp/resetPassword/5c6f0d36104d72f2098ed19e2f79602cbbe8bf9aba1536f58155c767d172136d08eb622d54bbc7acc3f2f7889c61f67e9a14
 Content-Type: application/json
 User-Agent: {{userAgent}}
 
 {
-  "newPassword": "vedyweb"
+  "newPassword": "vedyweb123"
 }

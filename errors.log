@@ -1,0 +1,11 @@
+[2024-04-26 21:38:28] Error: Failed to send email in C:\xampp\htdocs\LeanPHP\src\Controller\AuthController.php on line 135
+[2024-04-26 21:39:13] Error: Failed to send email in C:\xampp\htdocs\LeanPHP\src\Controller\AuthController.php on line 135
+[2024-04-26 21:40:37] Error: Failed to send email in C:\xampp\htdocs\LeanPHP\src\Controller\AuthController.php on line 135
+[2024-04-26 21:43:21] Error: Failed to send email in C:\xampp\htdocs\LeanPHP\src\Controller\AuthController.php on line 135
+[2024-04-26 21:53:15] Error: Username or email already exists in C:\xampp\htdocs\LeanPHP\src\Model\AuthModel.php on line 36
+[2024-04-26 21:53:38] Error: Username or email already exists in C:\xampp\htdocs\LeanPHP\src\Model\AuthModel.php on line 36
+[2024-04-26 21:53:41] Error: Username or email already exists in C:\xampp\htdocs\LeanPHP\src\Model\AuthModel.php on line 36
+[2024-04-26 21:53:42] Error: Username or email already exists in C:\xampp\htdocs\LeanPHP\src\Model\AuthModel.php on line 36
+[2024-04-26 22:34:53] Error: Failed to send email in C:\xampp\htdocs\LeanPHP\src\Controller\AuthController.php on line 135
+[2024-04-26 22:34:55] Error: Failed to send email in C:\xampp\htdocs\LeanPHP\src\Controller\AuthController.php on line 135
+[2024-04-26 23:04:00] Error: Failed to send email in C:\xampp\htdocs\LeanPHP\src\Controller\AuthController.php on line 135

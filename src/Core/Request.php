@@ -1,6 +1,6 @@
 <?php
 
-namespace LeanPHP\Core\Http;
+namespace LeanPHP\Core;
 
 class Request
 {

@@ -1,13 +1,23 @@
 # LeanPHP Micro Framework
 
-![License](https://img.shields.io/github/license/yourusername/LeanPHP)
-![GitHub stars](https://img.shields.io/github/stars/yourusername/LeanPHP?style=social)
-![GitHub forks](https://img.shields.io/github/forks/yourusername/LeanPHP?style=social)
-![GitHub issues](https://img.shields.io/github/issues/yourusername/LeanPHP)
-![GitHub pull requests](https://img.shields.io/github/issues-pr/yourusername/LeanPHP)
-![Twitter Follow](https://img.shields.io/twitter/follow/yourtwitter?style=social)
+<p align="center">
+  <a href="https://yourprojectwebsite.com" target="_blank">
+    <img src="https://raw.githubusercontent.com/yourusername/LeanPHP/master/path/to/your/logo.svg" width="400" alt="LeanPHP Logo">
+  </a>
+</p>
 
 LeanPHP is a lightweight, PHP-based micro-framework designed to accelerate the development of minimum viable products (MVPs) for startups and tech enterprises. It aligns with agile and lean startup methodologies, allowing for rapid development and deployment with minimal costs.
+
+![License](https://img.shields.io/github/license/vedyweb/LeanPHP)
+![GitHub stars](https://img.shields.io/github/stars/vedyweb/LeanPHP?style=social)
+![GitHub forks](https://img.shields.io/github/forks/vedyweb/LeanPHP?style=social)
+![GitHub issues](https://img.shields.io/github/issues/vedyweb/LeanPHP)
+![GitHub pull requests](https://img.shields.io/github/issues-pr/vedyweb/LeanPHP)
+
+## Join Our Community
+
+- **Twitter**: Follow us on [Twitter](https://twitter.com/vedyweb)
+- **Discord**: Join our [Discord](https://discord.gg/yourinvite) community to chat with the developers and other users.
 
 ## Key Features
 
@@ -29,6 +39,17 @@ Ideal for startups, independent developers, and small to medium-sized businesses
 - **Channels**: Official website, GitHub, social media, technology blogs, conferences.
 - **Revenue Streams**: Donations, licensing fees, premium support services, payments for additional features.
 - **Cost Structure**: Development and maintenance, marketing and promotion, customer support.
+
+## Who's Using LeanPHP?
+
+Here are some of the companies that have implemented LeanPHP:
+
+- **Company A**
+- **Company B**
+- **Company C**
+
+We are proud to see LeanPHP in action in such varied industries!
+
 
 ## Getting Started
 

@@ -1,5 +1,12 @@
 # LeanPHP Micro Framework
 
+![License](https://img.shields.io/github/license/yourusername/LeanPHP)
+![GitHub stars](https://img.shields.io/github/stars/yourusername/LeanPHP?style=social)
+![GitHub forks](https://img.shields.io/github/forks/yourusername/LeanPHP?style=social)
+![GitHub issues](https://img.shields.io/github/issues/yourusername/LeanPHP)
+![GitHub pull requests](https://img.shields.io/github/issues-pr/yourusername/LeanPHP)
+![Twitter Follow](https://img.shields.io/twitter/follow/yourtwitter?style=social)
+
 LeanPHP is a lightweight, PHP-based micro-framework designed to accelerate the development of minimum viable products (MVPs) for startups and tech enterprises. It aligns with agile and lean startup methodologies, allowing for rapid development and deployment with minimal costs.
 
 ## Key Features

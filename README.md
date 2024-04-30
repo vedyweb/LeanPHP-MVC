@@ -17,10 +17,21 @@ LeanPHP is a lightweight, PHP-based micro-framework designed to accelerate the d
 
 ## Key Features
 
+The term "Lean PHP" typically refers to how lean principles can be applied to the PHP programming language in software development. Lean is centered around reducing waste and maximizing value, which can be implemented in software development in various ways. Lean principles generally include the following concepts:
+
 - **Agile Compatibility**: Supports continuous integration and continuous deployment (CI/CD) practices.
 - **Lean Startup Ready**: "Download, run, and develop" model for frequent product releases.
 - **Cost Efficiency**: Minimizes total cost of ownership, no expensive licenses required.
 - **Rapid Development and Deployment**: Simplifies setup and speeds up development processes.
+- **Creating Value**: Focusing on features that create real value for customers.
+- **Improving Process Flow**: Removing barriers between processes to make workflow continuous.
+- **Continuous Improvement**: Regularly reviewing and improving processes.
+- **Reducing Waste**: Minimizing waste of time, resources, and effort.
+- **Rapid Feedback**: Quickly obtaining feedback from customers and users and reflecting it on the product.
+
+Applying lean principles to PHP aims to make the code cleaner, easier to maintain, and more efficient. This approach can also align with agile software development methodologies, as both emphasize adaptability and continuous improvement.
+
+Lean PHP might also involve techniques like developing a minimum viable product (MVP), rapid prototyping, and iterative development based on customer feedback. This approach can be particularly beneficial for startups and projects that need to adapt quickly to dynamic market conditions.
 
 ## Support Us
 

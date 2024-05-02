@@ -44,11 +44,10 @@ class AppConfig {
         return $this->config['classPaths'][$key] ?? null;
     }
 
-    /*
+    
     public function getDatabaseConfig() {
-        return DBConfig::getInstance();
+        // return DBConfig::getInstance();
     }
-    */
 
     public function get($key) {
         return $this->config[$key] ?? null;

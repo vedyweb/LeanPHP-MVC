@@ -34,49 +34,14 @@ class BaseModel {
             $stmt->execute();
             return $fetchAll ? $stmt->fetchAll(PDO::FETCH_ASSOC) : $stmt->fetch(PDO::FETCH_ASSOC);
         } catch (PDOException $e) {
-            $this->errorHandler->handle($e->getMessage());
-            throw new Exception("Database error during query execution.");
+            $this->errorHandler->handle($e);
+            throw new Exception("Database error during query execution: " . $e->getMessage());
         }
     }
-    
-    public function getAll(): array {
-        return $this->executeQuery("SELECT * FROM $this->table");
-    }
 
-    public function getById(int $id): ?array {
-        $query = "SELECT * FROM $this->table WHERE id = :id";
-        $result = $this->executeQuery($query, ['id' => $id], false);
-        return $result ?: ['error' => true, 'message' => 'Record not found'];
-    }
-
-    public function create(array $data): bool {
-        $keys = array_keys($data);
-        $fields = implode(", ", $keys);
-        $placeholders = ":" . implode(", :", $keys);
-        $query = "INSERT INTO $this->table ($fields) VALUES ($placeholders)";
-        return $this->executeQuery($query, $data, false);
-    }
-
-    public function update(int $id, array $data): bool {
-        $setString = '';
-        foreach ($data as $key => $value) {
-            $setString .= "$key = :$key, ";
-        }
-        $setString = rtrim($setString, ', ');
-        $query = "UPDATE $this->table SET $setString WHERE id = :id";
-        $data['id'] = $id;
-        return $this->executeQuery($query, $data, false);
-    }
-
-    public function delete(int $id): bool {
-        $query = "DELETE FROM $this->table WHERE id = :id";
-        return $this->executeQuery($query, ['id' => $id], false);
-    }
-
+    // Burada da çalışır direkt
     public function search(string $searchTerm, string $field = 'name'): array {
         $query = "SELECT * FROM $this->table WHERE $field LIKE :searchTerm";
         return $this->executeQuery($query, ['searchTerm' => "%$searchTerm%"]);
-    }
+    } 
 }
-
-?>

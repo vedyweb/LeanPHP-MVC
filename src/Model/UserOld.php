@@ -8,7 +8,7 @@ use Exception;
 use LeanPHP\Config\DBConfig;
 
 //class User extends Model{
-class User {
+class UserOld {
 
     protected $db;
     protected $table = 'users';

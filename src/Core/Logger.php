@@ -1,5 +1,6 @@
 <?php
 namespace LeanPHP\Core;
+use Throwable;
 
 class Logger
 {
@@ -14,4 +15,10 @@ class Logger
             error_log("Error: " . $error);
         }
     }
+
+    public function handle(Throwable $exception) {
+        $this->logError($exception->getMessage());
+        // Ek hata işleme adımları burada yer alabilir
+    }
+
 }

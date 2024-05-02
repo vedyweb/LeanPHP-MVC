@@ -4,7 +4,7 @@ namespace LeanPHP\Controller;
 use LeanPHP\Core\Response;
 USE LeanPHP\Core\Request;
 use LeanPHP\Core\JwtHelper;
-use LeanPHP\Config\DatabaseManager;
+use LeanPHP\Config\DBConfig;
 use PDOException;
 
 class HomeController
@@ -66,7 +66,7 @@ class HomeController
 // HomeController.php içinde bu metodu ekleyin
 
 public function install() {
-    $dbManager = DatabaseManager::getInstance();  // DatabaseManager sınıfından bir örnek alın
+    $dbManager = DBConfig::getInstance();  // DatabaseManager sınıfından bir örnek alın
     $connection = $dbManager->getConnection();    // Veritabanı bağlantısını alın
 
     // SQL komutlarını doğrudan tanımla

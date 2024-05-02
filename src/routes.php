@@ -41,5 +41,6 @@ return function ($router) {
     $router->get('', 'HomeController', 'hi');
 
     $router->addMiddleware('home', 'getAuthenticate');
+    $router->addMiddleware('secret', 'getAuthenticate');
     $router->addMiddleware('install', 'getAuthenticate');
 };

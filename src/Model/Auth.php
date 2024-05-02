@@ -12,9 +12,7 @@ use PDO;
  * AuthModel class.
  * Handles authentication-related database operations.
  */
-class AuthModel
-{
-
+class Auth {
     protected $db;
     protected $table = 'users';
     private $errorHandler;  // ErrorHandler özelliğini doğru şekilde tanımla

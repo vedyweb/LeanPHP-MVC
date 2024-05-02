@@ -3,7 +3,7 @@
 namespace LeanPHP\Controller;
 use LeanPHP\Core\Response;
 USE LeanPHP\Core\Request;
-use LeanPHP\Core\JwtAuth;
+use LeanPHP\Core\JwtHelper;
 use LeanPHP\Config\DatabaseManager;
 use PDOException;
 
@@ -37,16 +37,16 @@ class HomeController
     // Örneğin bir API kontrollerinde bu işlemi yapabilirsiniz.
     public function welcomeUser(Request $request) {
         $token = $this->extractTokenFromHeader($request->getHeader('Authorization'));
-        $jwtAuth = new JwtAuth();
+        $jwtHelper = new JwtHelper();
         $response = new Response();
 
    
 
-        if (!$jwtAuth->validateJWT($token)) {
+        if (!$jwtHelper->validateJWT($token)) {
             return $response->withJSON('Invalid token', 401)->send();
         }
 
-        $userData = $jwtAuth->decodeJWT($token);
+        $userData = $jwtHelper->decodeJWT($token);
         $userId = $userData['sub']; // 'sub' kullanıcı ID'si.
         $username = $userData['name']; // 'name' alanı kullanıcı adını temsil eder.
 

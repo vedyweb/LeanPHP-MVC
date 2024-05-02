@@ -4,21 +4,21 @@ namespace LeanPHP\Core;
 
 use LeanPHP\Core\Request;
 use LeanPHP\Core\Response;
-use LeanPHP\Model\AuthModel;
+use LeanPHP\Model\Auth;
 
-class JwtAuth {
+class JwtHelper {
 
     private $secret = "supersecretkey"; // Bu anahtar güvenlik için çok önemli, güçlü ve gizli tutulmalıdır.
     private $authModel;
 
     public function __construct() {
-        $this->authModel = new AuthModel();
+        $this->authModel = new Auth();
     }
 
     public function getAuthenticate(Request $request, Response $response): bool
     {
         $headers = getallheaders();
-        var_dump($headers);
+
         if (!isset($headers['authorization'])) {
             throw new \Exception('Authorization header is missing');
         }

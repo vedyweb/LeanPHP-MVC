@@ -18,7 +18,7 @@
 @username = vedat
 @password =  vedyweb123
 @userEmail = info@vedyweb.com
-@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjE4LCJuYW1lIjoidmVkYXQiLCJpYXQiOjE3MTQxNjM2MjAsImV4cCI6MTcxNDE2NzIyMH0.76UM9Mweo92ITRs2CmQbaTe1hcQVakwFS_zrOJqJBRs
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjE4LCJuYW1lIjoidmVkYXQiLCJpYXQiOjE3MTQ2MjcyMTQsImV4cCI6MTcxNDYzMDgxNH0.N6IOxOYRzonrgpcBxUhr5SKo_vY8pF_75PIihhzyJL0
 ###
 
 POST {{hostname}}/register HTTP/1.1

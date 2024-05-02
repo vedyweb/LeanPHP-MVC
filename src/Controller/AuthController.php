@@ -4,15 +4,15 @@ namespace LeanPHP\Controller;
 
 use LeanPHP\Core\Request;
 use LeanPHP\Core\Response;
-use LeanPHP\Model\AuthModel;
-use LeanPHP\Core\JwtAuth;
+use LeanPHP\Model\Auth;
+use LeanPHP\Core\JwtHelper;
 use LeanPHP\Core\ErrorHandler;
 use Exception;
 
 class AuthController
 {
     private $authModel;
-    private $jwtAuth;
+    private $jwtHelper;
     private $errorHandler;
 
     /**
@@ -20,8 +20,8 @@ class AuthController
      */
     public function __construct()
     {
-        $this->authModel = new AuthModel();
-        $this->jwtAuth = new JwtAuth();
+        $this->authModel = new Auth();
+        $this->jwtHelper = new JwtHelper();
         $this->errorHandler = new ErrorHandler();  // Initialize the ErrorHandler
     }
 
@@ -64,6 +64,7 @@ class AuthController
             if (!$user) {
                 $response->withJSON(['error' => 'User not found'], 404)->send();
                 return;
+
             }
 
             if (!password_verify($password, $user['password'])) {
@@ -73,7 +74,7 @@ class AuthController
 
             $payload = ["sub" => $user['user_id'], "name" => $user['username'], "iat" => time()];
             $tokenValidityInSeconds = 3600; // 1 hour
-            $token = $this->jwtAuth->createJWT($payload, $tokenValidityInSeconds);
+            $token = $this->jwtHelper->createJWT($payload, $tokenValidityInSeconds);
             $expiryDate = date('Y-m-d H:i:s', time() + $tokenValidityInSeconds);
 
             $this->authModel->saveTokenAndExpiry($user['user_id'], $token, $expiryDate);

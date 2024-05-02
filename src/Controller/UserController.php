@@ -1,7 +1,7 @@
 <?php
 
 namespace LeanPHP\Controller;
-use LeanPHP\Model\UserModel;
+use LeanPHP\Model\User;
 use LeanPHP\Core\ErrorHandler;
 use LeanPHP\Core\Request;
 use LeanPHP\Core\Response;
@@ -13,7 +13,7 @@ class UserController {
     private $errorHandler;  // ErrorHandler özelliğini doğru şekilde tanımla
 
     public function __construct() {
-        $this->userModel = new UserModel;
+        $this->userModel = new User;
         $this->errorHandler = new ErrorHandler;  // ErrorHandler örneğini başlat
     }
 

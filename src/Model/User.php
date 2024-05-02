@@ -7,7 +7,7 @@ use PDO;
 use PDOException;
 use Exception;
 
-class UserModel {
+class User {
     protected $db;
     protected $table = 'users';
     private $errorHandler;

@@ -13,13 +13,13 @@ class Router
 
     private $groupFolder;
     private $controllerNamespace;
-    private $authNamespace;
+    private $jwtHelperNamespace;
 
     public function __construct($baseFolder = '', $appName = '')
     {
         $this->groupFolder = $_ENV['APP_FOLDER'];
         $this->controllerNamespace = $appName ?: $_ENV['APP_NAME'] . '\Controller\\';
-        $this->authNamespace = $appName ?: $_ENV['APP_NAME'] . '\Core\\JwtAuth';
+        $this->jwtHelperNamespace = $appName ?: $_ENV['APP_NAME'] . '\Core\\JwtHelper';
     }
 
     public function get($path, $controller, $method)
@@ -52,7 +52,7 @@ class Router
 
     public function addMiddleware($path, $method)
     {
-        $auth = $this->authNamespace;
+        $auth = $this->jwtHelperNamespace;
         $fullPath = $this->groupFolder . $path . '.*';
         $this->middlewares[$fullPath] = ['controller' => $auth, 'method' => $method];
     }

@@ -1,16 +1,16 @@
-IONOS: 
-
-Bu şekilde ekliyorsun süslü parantezli kullanım eskide kalmış.
-Yalnız bu env. dosyasını ıonos guı'den oluşturman lazım.
-Onu repona eklemiyor, kendinde tutuyor, IONOS üzerinden deploymant file'lara bakınca görünüyor sadece.
-
-.env olarak tanımladım ben, uygulamayı indirdim bak ne burada ne de githubda yok bu dosya.
-
-APP_URL=$IONOS_APP_URL
-
-DB_CONNECTION=mysql
-DB_HOST=$IONOS_DB_HOST
-DB_PORT=3306
-DB_DATABASE=$IONOS_DB_NAME
-DB_USERNAME="$IONOS_DB_USERNAME"
-DB_PASSWORD="$IONOS_DB_PASSWORD"
+    ├── src/
+    │   ├── Config/                     // Contains configuration settings and environmental variables.
+    │   │   └── AppConfig.php
+    │   │   └── DatabaseConfig.php
+    │   ├── Controller/                 // Handling main framework logic and request routing.
+    │   │   └── BaseController.php      // Base controller with common functionalities.
+    │   │   └── NoteController.php      // Specific controller for note operations.
+    │   │   └── UserController.php      // Specific controller for user operations.
+    │   ├── Core/                       // Core components of the framework.
+    │   │   └── Application.php         // Initializes and manages the application lifecycle.
+    │   │   └── Router.php              // Handles URL routing and dispatching to controllers.
+    │   │   └── Database.php            // Manages database connections and queries.
+    │   ├── Model/                      // Responsible for data handling and database operations.
+    │   │   └── NoteModel.php           // Model for note-related database interactions.
+    │   │   └── UserModel.php           // Model for user-related database interactions.
+    │   └── routes.php                  // Configures and defines API routes.

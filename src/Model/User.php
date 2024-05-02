@@ -1,13 +1,15 @@
 <?php
 
 namespace LeanPHP\Model;
-use LeanPHP\Config\DatabaseManager;
 use LeanPHP\Core\ErrorHandler;
 use PDO;
 use PDOException;
 use Exception;
+use LeanPHP\Config\DBConfig;
 
+//class User extends Model{
 class User {
+
     protected $db;
     protected $table = 'users';
     private $errorHandler;
@@ -16,13 +18,15 @@ class User {
         $this->errorHandler = new ErrorHandler();
     }
 
-    protected function getDb() {
+    public function getDb()
+    {
         if (!$this->db) {
-            $databaseManager = new DatabaseManager();
+            $databaseManager = new DBConfig();
             $this->db = $databaseManager->getConnection();
         }
         return $this->db;
     }
+
 
     public function getAll(): array {
         $query = "SELECT * FROM $this->table";

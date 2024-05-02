@@ -47,4 +47,39 @@ Stack trace:
 #2 C:\xampp\htdocs\LeanPHP\src\Core\Router.php(79): LeanPHP\Core\Router->handleRouting('/leanphp/secret', Object(LeanPHP\Core\Request), Object(LeanPHP\Core\Response))
 #3 C:\xampp\htdocs\LeanPHP\src\Core\Autoloader.php(37): LeanPHP\Core\Router->dispatch('/leanphp/secret', Object(LeanPHP\Core\Request), Object(LeanPHP\Core\Response))
 #4 C:\xampp\htdocs\LeanPHP\index.php(21): LeanPHP\Core\Autoloader->loadRoutes('LeanPHP\\Core\\Re...', 'LeanPHP\\Core\\Re...', 'C:\\xampp\\htdocs...')
+#5 {main}Exception: Authorization header is missing in C:\xampp\htdocs\LeanPHP\src\Core\JwtHelper.php:23
+Stack trace:
+#0 [internal function]: LeanPHP\Core\JwtHelper->getAuthenticate(Object(LeanPHP\Core\Request), Object(LeanPHP\Core\Response))
+#1 C:\xampp\htdocs\LeanPHP\src\Core\Router.php(102): call_user_func_array(Array, Array)
+#2 C:\xampp\htdocs\LeanPHP\src\Core\Router.php(79): LeanPHP\Core\Router->handleRouting('/leanphp/home', Object(LeanPHP\Core\Request), Object(LeanPHP\Core\Response))
+#3 C:\xampp\htdocs\LeanPHP\src\Core\Autoloader.php(37): LeanPHP\Core\Router->dispatch('/leanphp/home', Object(LeanPHP\Core\Request), Object(LeanPHP\Core\Response))
+#4 C:\xampp\htdocs\LeanPHP\index.php(40): LeanPHP\Core\Autoloader->loadRoutes('LeanPHP\\Core\\Re...', 'LeanPHP\\Core\\Re...', 'C:\\xampp\\htdocs...')
+#5 {main}Exception: Authorization header is missing in C:\xampp\htdocs\LeanPHP\src\Core\JwtHelper.php:23
+Stack trace:
+#0 [internal function]: LeanPHP\Core\JwtHelper->getAuthenticate(Object(LeanPHP\Core\Request), Object(LeanPHP\Core\Response))
+#1 C:\xampp\htdocs\LeanPHP\src\Core\Router.php(102): call_user_func_array(Array, Array)
+#2 C:\xampp\htdocs\LeanPHP\src\Core\Router.php(79): LeanPHP\Core\Router->handleRouting('/leanphp/home', Object(LeanPHP\Core\Request), Object(LeanPHP\Core\Response))
+#3 C:\xampp\htdocs\LeanPHP\src\Core\Autoloader.php(37): LeanPHP\Core\Router->dispatch('/leanphp/home', Object(LeanPHP\Core\Request), Object(LeanPHP\Core\Response))
+#4 C:\xampp\htdocs\LeanPHP\index.php(40): LeanPHP\Core\Autoloader->loadRoutes('LeanPHP\\Core\\Re...', 'LeanPHP\\Core\\Re...', 'C:\\xampp\\htdocs...')
+#5 {main}Exception: Authorization header is missing in C:\xampp\htdocs\LeanPHP\src\Core\JwtHelper.php:23
+Stack trace:
+#0 [internal function]: LeanPHP\Core\JwtHelper->getAuthenticate(Object(LeanPHP\Core\Request), Object(LeanPHP\Core\Response))
+#1 C:\xampp\htdocs\LeanPHP\src\Core\Router.php(102): call_user_func_array(Array, Array)
+#2 C:\xampp\htdocs\LeanPHP\src\Core\Router.php(79): LeanPHP\Core\Router->handleRouting('/leanphp/home', Object(LeanPHP\Core\Request), Object(LeanPHP\Core\Response))
+#3 C:\xampp\htdocs\LeanPHP\src\Core\Autoloader.php(37): LeanPHP\Core\Router->dispatch('/leanphp/home', Object(LeanPHP\Core\Request), Object(LeanPHP\Core\Response))
+#4 C:\xampp\htdocs\LeanPHP\index.php(40): LeanPHP\Core\Autoloader->loadRoutes('LeanPHP\\Core\\Re...', 'LeanPHP\\Core\\Re...', 'C:\\xampp\\htdocs...')
+#5 {main}Exception: Authorization header is missing in C:\xampp\htdocs\LeanPHP\src\Core\JwtHelper.php:23
+Stack trace:
+#0 [internal function]: LeanPHP\Core\JwtHelper->getAuthenticate(Object(LeanPHP\Core\Request), Object(LeanPHP\Core\Response))
+#1 C:\xampp\htdocs\LeanPHP\src\Core\Router.php(102): call_user_func_array(Array, Array)
+#2 C:\xampp\htdocs\LeanPHP\src\Core\Router.php(79): LeanPHP\Core\Router->handleRouting('/leanphp/home', Object(LeanPHP\Core\Request), Object(LeanPHP\Core\Response))
+#3 C:\xampp\htdocs\LeanPHP\src\Core\Autoloader.php(37): LeanPHP\Core\Router->dispatch('/leanphp/home', Object(LeanPHP\Core\Request), Object(LeanPHP\Core\Response))
+#4 C:\xampp\htdocs\LeanPHP\index.php(40): LeanPHP\Core\Autoloader->loadRoutes('LeanPHP\\Core\\Re...', 'LeanPHP\\Core\\Re...', 'C:\\xampp\\htdocs...')
+#5 {main}Exception: Authorization header is missing in C:\xampp\htdocs\LeanPHP\src\Core\JwtHelper.php:23
+Stack trace:
+#0 [internal function]: LeanPHP\Core\JwtHelper->getAuthenticate(Object(LeanPHP\Core\Request), Object(LeanPHP\Core\Response))
+#1 C:\xampp\htdocs\LeanPHP\src\Core\Router.php(102): call_user_func_array(Array, Array)
+#2 C:\xampp\htdocs\LeanPHP\src\Core\Router.php(79): LeanPHP\Core\Router->handleRouting('/leanphp/home', Object(LeanPHP\Core\Request), Object(LeanPHP\Core\Response))
+#3 C:\xampp\htdocs\LeanPHP\src\Core\Autoloader.php(37): LeanPHP\Core\Router->dispatch('/leanphp/home', Object(LeanPHP\Core\Request), Object(LeanPHP\Core\Response))
+#4 C:\xampp\htdocs\LeanPHP\index.php(40): LeanPHP\Core\Autoloader->loadRoutes('LeanPHP\\Core\\Re...', 'LeanPHP\\Core\\Re...', 'C:\\xampp\\htdocs...')
 #5 {main}

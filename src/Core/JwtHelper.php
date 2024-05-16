@@ -11,8 +11,14 @@ class JwtHelper {
     private $secret = "supersecretkey"; // Bu anahtar güvenlik için çok önemli, güçlü ve gizli tutulmalıdır.
     private $authModel;
 
+    private static $currentUser = null;
+
     public function __construct() {
         $this->authModel = new Auth();
+    }
+
+    public static function user() {
+        return self::$currentUser;
     }
 
     public function getAuthenticate(Request $request, Response $response): bool

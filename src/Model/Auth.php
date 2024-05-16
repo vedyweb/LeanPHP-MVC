@@ -4,30 +4,19 @@ namespace LeanPHP\Model;
 
 use Exception;
 use PDOException;
-use LeanPHP\Config\DatabaseManager;
-use LeanPHP\Core\ErrorHandler;
 use PDO;
 
 /**
  * AuthModel class.
  * Handles authentication-related database operations.
  */
-class Auth {
+class Auth extends BaseModel{
     protected $db;
     protected $table = 'users';
     private $errorHandler;  // ErrorHandler özelliğini doğru şekilde tanımla
 
     public function __construct() {
-        $this->errorHandler = new ErrorHandler;  // ErrorHandler örneğini başlat
-    }
-
-    protected function getDb()
-    {
-        if (!$this->db) {
-            $databaseManager = new DatabaseManager();
-            $this->db = $databaseManager->getConnection();
-        }
-        return $this->db;
+        parent::__construct();  // BaseModel'in constructor'ını çağır
     }
 
     /**

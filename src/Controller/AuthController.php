@@ -7,6 +7,8 @@ use LeanPHP\Core\Response;
 use LeanPHP\Model\Auth;
 use LeanPHP\Core\JwtHelper;
 use LeanPHP\Core\ErrorHandler;
+use LeanPHP\Core\EmailService;
+
 use Exception;
 
 class AuthController
@@ -14,6 +16,7 @@ class AuthController
     private $authModel;
     private $jwtHelper;
     private $errorHandler;
+    private $emailService;
 
     /**
      * AuthController constructor.
@@ -23,6 +26,7 @@ class AuthController
         $this->authModel = new Auth();
         $this->jwtHelper = new JwtHelper();
         $this->errorHandler = new ErrorHandler();  // Initialize the ErrorHandler
+        $this->emailService = new EmailService();
     }
 
     /**
@@ -108,7 +112,7 @@ class AuthController
             $this->authModel->storeResetToken($user['user_id'], $resetToken, $expiry);
             $resetLink = getenv('APP_URL') . getenv('APP_FOLDER') . "resetPassword/{$resetToken}";
             print_r($resetLink);
-            // Assuming you have a method to send emails
+            
             $this->sendResetEmail($email, $resetLink);
 
             $response->withJSON(['message' => 'Reset email sent successfully', 'resetLink' => $resetLink])->send();
@@ -117,24 +121,11 @@ class AuthController
         }
     }
 
-    // Implement other methods similarly...
-
-    /**
-     * Helper method to send email for password reset
-     */
     private function sendResetEmail($email, $resetLink)
     {
-        $subject = "Your Password Reset Link";
-        $message = "<html><body>";
-        $message .= "<p>Click <a href='{$resetLink}'>here</a> to reset your password.</p>";
-        $message .= "</body></html>";
-        $headers = "From: no-reply@example.com\r\n";
-        $headers .= "Reply-To: no-reply@example.com\r\n";
-        $headers .= "Content-type: text/html; charset=UTF-8\r\n";
-
-        if (!mail($email, $subject, $message, $headers)) {
-            throw new Exception('Failed to send email');
-        }
+        $subject = 'Password Reset Request';
+        $bodyContent = "Please click the following link to reset your password: <a href='{$resetLink}'>Reset Password</a>";
+        $this->emailService->sendEmail($email, $subject, $bodyContent);
     }
 
     public function resetPassword(Request $request, Response $response, $token)

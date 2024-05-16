@@ -1,0 +1,28 @@
+# APP CONF.
+APP_NAME=LeanPHP
+APP_FOLDER=/leanphp/
+APP_MODE=production
+APP_HOST=localhost
+APP_URL=https://localhost.com
+
+API_KEY=your_service_api_key_here
+APP_SECRET=your_service_api_secret_here
+APP_DEBUG=false
+APP_ADMIN_MAIL=vedyweb@gmail.com
+
+# DATABASE CONF.
+DB_DRIVER=mysql
+DB_HOST=localhost
+DB_NAME=leanphp
+DB_USER=root
+DB_PASSWORD=
+
+# MAIL CONF.
+EMAIL_SENDER=LeanPHP Customer Services <customer.services@leanphp.io>
+EMAIL_REPLY_TO=LeanPHP <info@leanphp.io>
+EMAIL_RETURN_PATH=info@leanphp.io
+
+# EMAIL_HOST=smtp.yourdomain.com
+# EMAIL_PORT=587
+# EMAIL_USERNAME=your_email_username
+# EMAIL_PASSWORD=your_email_password

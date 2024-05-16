@@ -1,5 +1,4 @@
 <?php
-
 namespace LeanPHP\Core;
 
 use LeanPHP\Core\Logger;
@@ -71,10 +70,11 @@ class Router
         $this->prefix = $previousPrefix;
     }
 
+
     public function dispatch($uri, $request, $response)
     {
         try {
-            Logger::logInfo("Trying to dispatch URI: " . $uri); // Gelen URI'yi loglayın
+            Logger::logError("Trying to dispatch URI: " . $uri); // Gelen URI'yi loglayın
 
             if (!$this->handleRouting($uri, $request, $response)) {
                 http_response_code(404);

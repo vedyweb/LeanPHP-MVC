@@ -17,7 +17,7 @@ class HomeController
         $article = "Welcome to LeanPHP";
         $response = new Response();
     
-        if (!$article) {
+        if(!$article) {
             return $response->withJSON(['error' => 'Article not found'], 404)->send();
         }
         return $response->withJSON($article)->send();
@@ -33,8 +33,21 @@ class HomeController
         return $response->withJSON($article)->send();
     }
 
+    public function xrp(Request $request) {
 
-    // Örneğin bir API kontrollerinde bu işlemi yapabilirsiniz.
+    $authorizationHeader = $request->getHeader('authorization');
+    $auth = new JWTHelper();
+    $auth->decodeJWT($authorizationHeader);
+
+    $user = JWTHelper::user();
+    if ($user) {
+        echo "Hoş geldin, {$user->name} (Kullanıcı ID: #{$user->sub})";
+    } else {
+        echo "Geçersiz token.";
+    }
+
+}
+    /* Örneğin bir API kontrollerinde bu işlemi yapabilirsiniz.
     public function welcomeUser(Request $request) {
         $token = $this->extractTokenFromHeader($request->getHeader('Authorization'));
         $jwtHelper = new JwtHelper();
@@ -54,13 +67,7 @@ class HomeController
         // Kullanıcıya özel bir mesaj döndür
         return $response->withJSON("Hoş geldin, {$username} (Kullanıcı ID: #{$userId})", 200);
     }
-
-    private function extractTokenFromHeader($header) {
-        if (preg_match('/Bearer\s(\S+)/', $header, $matches)) {
-            return $matches[1];
-        }
-        return null;
-    }
+*/
 
 
 // HomeController.php içinde bu metodu ekleyin

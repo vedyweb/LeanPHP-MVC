@@ -41,7 +41,7 @@ class UserController {
             $newUser = $this->userModel->create(
                 $userData['email'],
                 $userData['username'],
-                $userData['password'],
+                $userData['password']
             );
             $response->withJson(['data' => $newUser])->send();
         } catch (Exception $e) {

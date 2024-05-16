@@ -5,8 +5,8 @@ Options -MultiViews
 # Activates URL rewriting (like myproject.com/controllers/action/1/2/3)
 RewriteEngine On
 
-RewriteBase /leanphp/
-# RewriteBase /
+# RewriteBase /leanphp/
+RewriteBase /
 
 # Prevent people from looking directly into folders
 Options -Indexes

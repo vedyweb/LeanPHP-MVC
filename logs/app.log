@@ -1,0 +1,8 @@
+
+[2024-05-16 14:37:33] Info: Trying to dispatch URI: /leanphp/api/users
+[2024-05-16 14:37:33] Info: Connected to MySQL database at localhost
+[2024-05-16 14:37:38] Info: Trying to dispatch URI: /leanphp/api/user/1
+[2024-05-16 14:37:38] Info: Connected to MySQL database at localhost
+[2024-05-16 14:37:42] Info: Trying to dispatch URI: /leanphp/api/user/11
+[2024-05-16 14:37:42] Info: Connected to MySQL database at localhost
+[2024-05-16 14:39:25] Info: Trying to dispatch URI: /leanphp/api/usesr/11

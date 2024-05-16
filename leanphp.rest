@@ -1,0 +1,133 @@
+
+###
+# Headerda Postman gibi User-Agent bilgisi olmadan sonuç dönmüyor,.
+# Kayıt/Üye olunmadan login olunamaz.
+# Login olunmadan da token alınıp bir middleware (/auth gibi) bir api çağrılamaz.
+# Önce kayıt ol:
+#
+# NOT: Aynı kullanıcı defalarca kayıt olamasın diye kodsal değişiklik yapıldı, tabloda da yapılması gerekiyor.
+# Login işlemi falan da çalışmıyor çoklu kayıtta, logindeki sorun oymuş sabahtan beri.
+# ALTER TABLE users ADD UNIQUE (username);
+# ALTER TABLE users ADD UNIQUE (email);
+#
+###
+
+@hostname = https://api.leanphp.io
+@path = api
+@userAgent = LeanPHPRestClient
+@username = yasem
+@password =  vedyweb123
+@userEmail = info@vedyweb.com
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjE4LCJuYW1lIjoieWFzZW0iLCJpYXQiOjE3MTU4NjQyODksImV4cCI6MTcxNTg2Nzg4OX0.zKbZ8clbo4klskCsVMMnq6hAanAIa2He-kTqX8WoWmU
+###
+
+POST {{hostname}}/register HTTP/1.1
+Content-Type: application/json
+User-Agent: {{userAgent}}
+
+{
+  "username": "{{username}}",
+  "password": "{{password}}",
+  "email": "{{userEmail}}"
+}
+
+###
+# Kayıt olduğun veya kayıtlı bir kullanıcıyla login ol:
+# Ardından sana 1 saat süresi olan bir token gelecek.
+# Kullanıcı bilgilerini içeren o tokenla middleware servislerine erişebilirsin.
+###
+
+### Login İsteği
+POST {{hostname}}/login HTTP/1.1
+Content-Type: application/json
+User-Agent: {{userAgent}}
+
+{
+  "username": "{{username}}",
+  "password": "{{password}}"
+}
+
+###
+
+POST {{hostname}}/x HTTP/1.1
+Content-Type: application/json
+User-Agent: {{userAgent}}
+Authorization: Bearer {{token}}
+
+### Auth ile Kullanıcı Karşılama
+
+###
+# Heade alanında loginden aldığın 1 saat geçerli olan tokenla bu servisi çağırmazsan,
+# nu hatayı verir: {"error":"Internal Server Error","message":"Invalid or expired token"}
+# Her headera bearer token eklemen gerekecek middleware kullanılan metodlar için.
+# Bu metod özel, tokenı parce edip user'ı buluyor mesela :)
+###
+POST {{hostname}}/auth/dashboard HTTP/1.1
+Content-Type: application/json
+User-Agent: {{userAgent}}
+Authorization: Bearer {{token}}
+
+###
+
+GET {{hostname}}/secret HTTP/1.1
+Content-Type: application/json
+User-Agent: {{userAgent}}
+Authorization: Bearer {{token}}
+
+###
+# Veritabanı oluşturulmuşsa bu metod başarılı bir şekilde userları ekliyor.
+GET {{hostname}}/install HTTP/1.1
+Content-Type: application/json
+User-Agent: {{userAgent}}
+Authorization: Bearer {{token}}
+
+###
+
+GET {{hostname}}/api/users HTTP/1.1
+Content-Type: application/json
+User-Agent: {{userAgent}}
+
+###
+
+GET {{hostname}}/api/user/3 HTTP/1.1
+Content-Type: application/json
+User-Agent: {{userAgent}}
+
+###
+
+POST {{hostname}}/api/users HTTP/1.1
+Content-Type: application/json
+User-Agent: {{userAgent}}
+{
+    "email": "john.doe@example.com",
+    "username": "johndoe",
+    "password": "3456777"
+
+}
+
+
+###
+# Buraya maili yazıp post ettiğinde, sana dönen token'a tıklayarak şifreni sıfırlayabiliyorsun.
+# Bu şekilde bir yanıt dönüyor: https://localhost/resetPassword/6431bd.....
+POST {{hostname}}/newpassword HTTP/1.1
+Content-Type: application/json
+User-Agent: {{userAgent}}
+
+{
+  "email": "info@vedyweb.com"
+}
+
+###
+# Öncelikle mail olarak şu linke geliniyor, ama bu backend linki tabii ki,
+# Bu linki FE üzerinden alabilmesi için FE ye gelmesi gerek.
+# FE yeni şifresini de alıp backende gmüönderecek.
+# Örnek response 18 - vedyweb{"message":"Token is valid and Password updated successfully"}
+# Bundan sonra tekrar login olduğunda yeni şifrenmi giriyorsun.
+
+POST {{hostname}}/resetPassword/d78bb75fadcab826e138c85af3a1443c5b1d38ed3cc9da0c84f2c74becad15f36b027ede72ca18ca97cef69ad223f9df2ed8
+Content-Type: application/json
+User-Agent: {{userAgent}}
+
+{
+  "newPassword": "vedyweb"
+}

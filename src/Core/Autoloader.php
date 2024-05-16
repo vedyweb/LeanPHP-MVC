@@ -96,4 +96,3 @@ class Autoloader
         return trim($value, '"');
     }
 }
-

@@ -18,7 +18,8 @@
 @username = vedat
 @password =  vedyweb123
 @userEmail = info@vedyweb.com
-@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjE4LCJuYW1lIjoidmVkYXQiLCJpYXQiOjE3MTQ2MjcyMTQsImV4cCI6MTcxNDYzMDgxNH0.N6IOxOYRzonrgpcBxUhr5SKo_vY8pF_75PIihhzyJL0
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjE4LCJuYW1lIjoidmVkYXQiLCJpYXQiOjE3MTQ2NTM5OTcsImV4cCI6MTcxNDY1NzU5N30.Bfm-fHmgI4ifIy1JS88AYhBt_LLs3TrmwjDiU3FRKvM
+
 ###
 
 POST {{hostname}}/register HTTP/1.1
@@ -46,6 +47,13 @@ User-Agent: {{userAgent}}
   "username": "{{username}}",
   "password": "{{password}}"
 }
+
+###
+
+POST {{hostname}}/x HTTP/1.1
+Content-Type: application/json
+User-Agent: {{userAgent}}
+Authorization: Bearer {{token}}
 
 ### Auth ile Kullanıcı Karşılama
 
@@ -111,13 +119,16 @@ User-Agent: {{userAgent}}
 }
 
 ###
+# Öncelikle mail olarak şu linke geliniyor, ama bu backend linki tabii ki,
+# Bu linki FE üzerinden alabilmesi için FE ye gelmesi gerek.
+# FE yeni şifresini de alıp backende gmüönderecek.
 # Örnek response 18 - vedyweb{"message":"Token is valid and Password updated successfully"}
 # Bundan sonra tekrar login olduğunda yeni şifrenmi giriyorsun.
 
-POST https://localhost/leanphp/resetPassword/5c6f0d36104d72f2098ed19e2f79602cbbe8bf9aba1536f58155c767d172136d08eb622d54bbc7acc3f2f7889c61f67e9a14
+GET {{hostname}}/resetPassword/8a271202f12affe3f332343d2da7411fd194f1e3c3839674ef7cfed5d0a69485c651c9c573e249d31f37627a602c8b418b64
 Content-Type: application/json
 User-Agent: {{userAgent}}
 
 {
-  "newPassword": "vedyweb123"
+  "newPassword": "vedyweb"
 }

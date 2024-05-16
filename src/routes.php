@@ -39,6 +39,7 @@ return function ($router) {
     
     // Genel erişim rotaları
     $router->get('', 'HomeController', 'hi');
+    $router->get('x', 'HomeController', 'xrp');
 
     $router->addMiddleware('home', 'getAuthenticate');
     $router->addMiddleware('secret', 'getAuthenticate');

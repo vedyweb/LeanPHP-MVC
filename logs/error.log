@@ -1,1 +1,7 @@
 [2024-05-16 14:39:25] Error: 404 Not Found: No route matches the provided URI - /leanphp/api/usesr/11
+[2024-05-16 18:32:39] Error: 404 Not Found: No route matches the provided URI - /leanphp/api/users
+[2024-05-16 18:33:21] Error: SQLSTATE[HY000] [1045] Access denied for user 'Vedat'@'81.214.160.106' (using password: YES) in C:\xampp\htdocs\LeanPHP\src\Config\DBConfig.php on line 68
+[2024-05-16 18:33:21] Error: SQLSTATE[HY000] [1045] Access denied for user 'Vedat'@'81.214.160.106' (using password: YES) in C:\xampp\htdocs\LeanPHP\src\Config\DBConfig.php on line 68
+[2024-05-16 18:33:56] Error: SQLSTATE[HY000] [1045] Access denied for user 'rooot'@'localhost' (using password: NO) in C:\xampp\htdocs\LeanPHP\src\Config\DBConfig.php on line 68
+[2024-05-16 18:33:56] Error: SQLSTATE[HY000] [1045] Access denied for user 'rooot'@'localhost' (using password: NO) in C:\xampp\htdocs\LeanPHP\src\Config\DBConfig.php on line 68
+[2024-05-16 19:26:30] Error: 404 Not Found: No route matches the provided URI - /leanphp/x

@@ -6,7 +6,7 @@ use LeanPHP\Core\Request;
 use LeanPHP\Core\Response;
 use LeanPHP\Model\Auth;
 
-class JwtHelper {
+class JwtHelper3 {
 
     private $secret = "supersecretkey"; // Bu anahtar güvenlik için çok önemli, güçlü ve gizli tutulmalıdır.
     private $authModel;
@@ -34,14 +34,9 @@ class JwtHelper {
             throw new \Exception('Invalid or expired token');
         }
 
-        // Kullanıcıyı ayarla
-        $payload = $this->decodeJWT($token);
-        self::$currentUser = $payload;
-
         return true;
     }
 
-    
     public function createJWT($payload, $expiryDuration) {
         $header = ["alg" => "HS256", "typ" => "JWT"];
         $payload['exp'] = time() + $expiryDuration;
@@ -89,3 +84,5 @@ class JwtHelper {
         return base64_decode(strtr($data, '-_', '+/'));
     }
 }
+
+

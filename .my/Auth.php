@@ -27,9 +27,10 @@ class Auth extends BaseModel{
      * @param string $email User's email.
      */
 
-
-     public function registerUser($username, $password, $email, $role) {
+    public function registerUser($username, $password, $email)
+    {
         try {
+            // Kullanıcı adı veya e-posta zaten kullanılıyor mu kontrol et
             $sql = "SELECT COUNT(*) FROM users WHERE username = :username OR email = :email";
             $stmt = $this->getDb()->prepare($sql);
             $stmt->execute([':username' => $username, ':email' => $email]);
@@ -37,10 +38,11 @@ class Auth extends BaseModel{
                 return ['error' => true, 'message' => 'Username or email already exists'];
             }
 
+            // Kullanıcı kaydet
             $hashed_password = password_hash($password, PASSWORD_DEFAULT);
-            $sql = "INSERT INTO users (username, password, email, role) VALUES (:username, :hashed_password, :email, :role)";
+            $sql = "INSERT INTO users (username, password, email) VALUES (:username, :hashed_password, :email)";
             $stmt = $this->getDb()->prepare($sql);
-            $stmt->execute([':username' => $username, ':hashed_password' => $hashed_password, ':email' => $email, ':role' => $role]);
+            $stmt->execute([':username' => $username, ':hashed_password' => $hashed_password, ':email' => $email]);
             return ['error' => false, 'message' => 'User registered successfully'];
         } catch (PDOException $e) {
             $this->errorHandler->handle($e->getMessage());
@@ -48,7 +50,9 @@ class Auth extends BaseModel{
         }
     }
 
-    public function loginUser($username) {
+
+    public function loginUser($username)
+    {
         try {
             $sql = "SELECT * FROM users WHERE username = :username";
             $stmt = $this->getDb()->prepare($sql);

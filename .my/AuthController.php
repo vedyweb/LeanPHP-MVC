@@ -35,21 +35,21 @@ class AuthController
      * @param Request $request
      * @param Response $response
      */
-    public function register(Request $request, Response $response) {
+    public function register(Request $request, Response $response)
+    {
         try {
             $username = $request->get('username');
             $password = $request->get('password');
             $email = $request->get('email');
-            $role = $request->get('role'); // Rolü al
 
-            if (empty($username) || empty($password) || empty($email) || empty($role)) {
+            if (empty($username) || empty($password) || empty($email)) {
                 $response->withJSON(['error' => 'All fields are required'], 400)->send();
                 return;
             }
 
-            $result = $this->authModel->registerUser($username, $password, $email, $role);
+            $result = $this->authModel->registerUser($username, $password, $email);
             if ($result['error']) {
-                $response->withJSON(['error' => $result['message']], 409)->send();
+                $response->withJSON(['error' => $result['message']], 409)->send(); // 409 Conflict
                 return;
             }
             $response->withJSON(['message' => 'User registered successfully'])->send();
@@ -58,7 +58,8 @@ class AuthController
         }
     }
 
-    public function login(Request $request, Response $response) {
+    public function login(Request $request, Response $response)
+    {
         try {
             $username = $request->get('username');
             $password = $request->get('password');
@@ -67,6 +68,7 @@ class AuthController
             if (!$user) {
                 $response->withJSON(['error' => 'User not found'], 404)->send();
                 return;
+
             }
 
             if (!password_verify($password, $user['password'])) {
@@ -74,12 +76,7 @@ class AuthController
                 return;
             }
 
-            $payload = [
-                "sub" => $user['user_id'],
-                "name" => $user['username'],
-                "role" => $user['role'], // Rolü payload'a ekle
-                "iat" => time()
-            ];
+            $payload = ["sub" => $user['user_id'], "name" => $user['username'], "iat" => time()];
             $tokenValidityInSeconds = 3600; // 1 hour
             $token = $this->jwtHelper->createJWT($payload, $tokenValidityInSeconds);
             $expiryDate = date('Y-m-d H:i:s', time() + $tokenValidityInSeconds);

@@ -1,14 +1,21 @@
 <?php
 
 namespace LeanPHP\Controller;
-use LeanPHP\Core\Response;
-USE LeanPHP\Core\Request;
-use LeanPHP\Core\JwtHelper;
-use LeanPHP\Config\DBConfig;
-use PDOException;
 
-class HomeController
-{
+use LeanPHP\Core\Request;
+use LeanPHP\Core\Response;
+use LeanPHP\Core\JwtHelper;
+use LeanPHP\Core\ErrorHandler;
+use Exception;
+
+class HomeController {
+    private $jwtHelper;
+    private $errorHandler;
+
+    public function __construct() {
+        $this->jwtHelper = new JwtHelper();
+        $this->errorHandler = new ErrorHandler();
+    }
     /**
      * PAGE: index
      * This method handles what happens when you move to http://yourdomain/HomeController/index (which is the default page btw)
@@ -33,44 +40,28 @@ class HomeController
         return $response->withJSON($article)->send();
     }
 
-    public function xrp(Request $request) {
 
-    $authorizationHeader = $request->getHeader('authorization');
-    $auth = new JWTHelper();
-    $auth->decodeJWT($authorizationHeader);
+    public function getUserProfile(Request $request, Response $response) {
+        try {
+            $this->jwtHelper->getAuthenticate($request, $response);
+            $user = JwtHelper::user();
 
-    $user = JWTHelper::user();
-    if ($user) {
-        echo "Hoş geldin, {$user->name} (Kullanıcı ID: #{$user->sub})";
-    } else {
-        echo "Geçersiz token.";
-    }
+            if (!$user) {
+                $response->withJSON(['error' => 'User not authenticated'], 401)->send();
+                return;
+            }
 
-}
-    /* Örneğin bir API kontrollerinde bu işlemi yapabilirsiniz.
-    public function welcomeUser(Request $request) {
-        $token = $this->extractTokenFromHeader($request->getHeader('Authorization'));
-        $jwtHelper = new JwtHelper();
-        $response = new Response();
+            $userProfile = [
+                'username' => $user['name'],
+                'role' => $user['role']
+            ];
 
-   
-
-        if (!$jwtHelper->validateJWT($token)) {
-            return $response->withJSON('Invalid token', 401)->send();
+            $response->withJSON(['user' => $userProfile])->send();
+        } catch (Exception $e) {
+            $this->errorHandler->handle($e);
+            $response->withJSON(['error' => $e->getMessage()], 500)->send();
         }
-
-        $userData = $jwtHelper->decodeJWT($token);
-        $userId = $userData['sub']; // 'sub' kullanıcı ID'si.
-        $username = $userData['name']; // 'name' alanı kullanıcı adını temsil eder.
-
-        print_r($userId . " - " . $username);
-        // Kullanıcıya özel bir mesaj döndür
-        return $response->withJSON("Hoş geldin, {$username} (Kullanıcı ID: #{$userId})", 200);
     }
-*/
-
-
-// HomeController.php içinde bu metodu ekleyin
 
 public function install() {
     $dbManager = DBConfig::getInstance();  // DatabaseManager sınıfından bir örnek alın

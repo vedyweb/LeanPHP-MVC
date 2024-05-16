@@ -16,7 +16,7 @@ return function ($router) {
 
     // Kimlik doğrulama ile ilgili rotalar
     $router->group('auth/', function ($router) {
-        $router->post('dashboard', 'HomeController', 'welcomeUser');
+        $router->post('dashboard', 'HomeController', 'getUserProfile');
     });
     $router->addMiddleware('auth', 'getAuthenticate');
 
@@ -39,7 +39,6 @@ return function ($router) {
     
     // Genel erişim rotaları
     $router->get('', 'HomeController', 'hi');
-    $router->get('x', 'HomeController', 'xrp');
 
     $router->addMiddleware('home', 'getAuthenticate');
     $router->addMiddleware('secret', 'getAuthenticate');

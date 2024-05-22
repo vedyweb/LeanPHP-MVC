@@ -1,18 +1,18 @@
-# LeanPHP Micro Framework
-
 <p align="center">
   <a href="https://leanphp.io" target="_blank">
-    <img src="https://raw.githubusercontent.com/leanphp/leanphp/master/logo.svg" width="400" alt="LeanPHP Logo">
+    <img src="https://pbs.twimg.com/profile_images/1792313080598192128/s807NH3d_400x400.jpg" width="400" alt="LeanPHP Logo">
   </a>
 </p>
 
-LeanPHP is a lightweight, PHP-based micro-framework designed to accelerate the development of minimum viable products (MVPs) for startups and tech enterprises. It aligns with agile and lean startup methodologies, allowing for rapid development and deployment with minimal costs.
+# LeanPHP | The Micro Framework for Agile Startups!
 
-![License](https://img.shields.io/github/license/leanphp/leanphp)
-![GitHub stars](https://img.shields.io/github/stars/leanphp/leanphp?style=social)
-![GitHub forks](https://img.shields.io/github/forks/leanphp/leanphp?style=social)
-![GitHub issues](https://img.shields.io/github/issues/leanphp/leanphp)
-![GitHub pull requests](https://img.shields.io/github/issues-pr/leanphp/leanphp)
+LeanPHP is a lightweight, PHP-based micro-framework designed to accelerate the development of minimum viable products (MVPs) for startups and tech enterprises. It runs on any PHP hosting without the need for additional packages or installations, aligns with agile and lean startup methodologies, allowing for rapid development and deployment with minimal costs.
+
+![License](https://img.shields.io/github/license/leanphp-projects/leanphp)
+![GitHub stars](https://img.shields.io/github/stars/leanphp-projects/leanphp?style=social)
+![GitHub forks](https://img.shields.io/github/forks/leanphp-projects/leanphp?style=social)
+![GitHub issues](https://img.shields.io/github/issues/leanphp-projects/leanphp)
+![GitHub pull requests](https://img.shields.io/github/issues-pr/leanphp-projects/leanphp)
 ![Twitter Follow](https://img.shields.io/twitter/follow/leanphpio?style=social)
 
 ## Key Features
@@ -97,17 +97,7 @@ These comparisons and comments were prepared to highlight the advantages of Lean
 ## Support Us
 
 We love our contributors and supporters! If you'd like to contribute financially, please visit our [GitHub Sponsors](https://github.com/sponsors/leanphp) page or our [Patreon](https://patreon.com/leanphp).
-
 Alternatively, you can make a one-time donation via [Buy Me a Coffee](https://www.buymeacoffee.com/leanphp).
-
-## Who's Using LeanPHP?
-
-Here are some of the companies that have implemented LeanPHP:
-
-- Company A
-- Company B
-- Company C
-
 We are proud to see LeanPHP in action in such varied industries!
 
 ## Join Our Community
@@ -131,7 +121,7 @@ For more information on how to contribute, visit our [Contribution Guidelines](h
 For support, inquiries, or more information about LeanPHP, please reach out to us via:
 
 - **Email**: support@leanphp.io
-- **Community Forum**: [LeanPHP Forum](https://forum.leanphp.io/)
+- **Community Forum**: [LeanPHP Mastodon](https://phpc.social/@leanphp)
 - **GitHub Issues**: [LeanPHP GitHub](https://github.com/leanphp/leanphp/issues)
 
 Thank you for being part of the LeanPHP community!
